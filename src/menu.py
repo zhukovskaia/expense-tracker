@@ -1,3 +1,6 @@
+import expences
+
+
 def show_menu():
     print("\n=== Учёт расходов ===")
     print("1. Добавить расход")
@@ -13,7 +16,7 @@ def run():
         if choice == "1":
             print("Добавление расхода (скоро)")
         elif choice == "2":
-            print("Просмотр расходов (скоро)")
+            expences.show_expenses()
         elif choice == "3":
             print("Статистика (скоро)")
         elif choice == "0":
