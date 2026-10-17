@@ -14,7 +14,10 @@ def run():
         show_menu()
         choice = input("Выберите пункт: ").strip()
         if choice == "1":
-            print("Добавление расхода (скоро)")
+            category = input("Категория: ").strip()
+            amount = input("Сумма: ").strip()
+            comment = input("Комментарий (необязательно): ").strip()
+            expences.add_expense(category, amount, comment)
         elif choice == "2":
             expences.show_expenses()
         elif choice == "3":
