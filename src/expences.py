@@ -1,9 +1,9 @@
 """Добавление и просмотр расходов."""
 
-_expenses = [
-    {"category": "Еда", "amount": 450, "comment": "Обед"},
-    {"category": "Транспорт", "amount": 60, "comment": "Метро"},
-]
+import storage
+
+# Загружаем расходы из файла при старте
+_expenses = storage.load_expenses()
 
 
 def show_expenses():
@@ -14,3 +14,9 @@ def show_expenses():
     for i, exp in enumerate(_expenses, start=1):
         print(f"{i}. {exp['category']} — {exp['amount']} руб. ({exp['comment']})")
     print("-------------------")
+
+
+def add_expense(category, amount, comment=""):
+    _expenses.append({"category": category, "amount": amount, "comment": comment})
+    storage.save_expenses(_expenses)
+    print("Расход добавлен.")
