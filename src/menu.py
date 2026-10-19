@@ -8,6 +8,7 @@ def show_menu():
     print("1. Добавить расход")
     print("2. Показать все расходы")
     print("3. Статистика по категориям")
+    print("4. Удалить расход")  # <--- Новый пункт
     print("0. Выход")
 
 
@@ -29,6 +30,13 @@ def run():
             expences.show_expenses()
         elif choice == "3":
             stats.show_statistics(expences.get_expenses())
+        elif choice == "4":  # <--- Обработка удаления
+            expences.show_expenses()
+            try:
+                index = int(input("Введите номер расхода для удаления: "))
+                expences.delete_expense(index)
+            except ValueError:
+                print("Ошибка: нужно ввести целое число.")
         elif choice == "0":
             print("До свидания!")
             break
