@@ -12,11 +12,19 @@ def show_expenses():
         return
     print("\n--- Все расходы ---")
     for i, exp in enumerate(_expenses, start=1):
-        print(f"{i}. {exp['category']} — {exp['amount']} руб. ({exp['comment']})")
+        line = f"{i}. {exp.get('date', '—')} | {exp['category']} — {exp['amount']} руб."
+        if exp.get("comment"):
+            line += f" ({exp['comment']})"
+        print(line)
     print("-------------------")
 
 
-def add_expense(category, amount, comment=""):
-    _expenses.append({"category": category, "amount": amount, "comment": comment})
+def add_expense(category, amount, date, comment=""):
+    _expenses.append({
+        "date": date,
+        "category": category,
+        "amount": amount,
+        "comment": comment,
+    })
     storage.save_expenses(_expenses)
     print("Расход добавлен.")
