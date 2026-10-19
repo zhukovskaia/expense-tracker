@@ -6,6 +6,10 @@ import storage
 _expenses = storage.load_expenses()
 
 
+def get_expenses():
+    return _expenses
+
+
 def show_expenses():
     if not _expenses:
         print("Список расходов пуст.")
