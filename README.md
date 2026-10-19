@@ -11,6 +11,9 @@
 ##  Запуск
 python src/main.py
 
+##  Тесты
+python -m unittest discover -s tests -t .
+
 ##  Структура проекта
 -  src/ — исходный код
 -  tests/ — тесты
