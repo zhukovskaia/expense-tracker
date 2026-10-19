@@ -2,7 +2,6 @@
 
 import storage
 
-# Загружаем расходы из файла при старте
 _expenses = storage.load_expenses()
 
 
@@ -32,3 +31,15 @@ def add_expense(category, amount, date, comment=""):
     })
     storage.save_expenses(_expenses)
     print("Расход добавлен.")
+
+
+def delete_expense(index):
+    """Удалить расход по его номеру."""
+    if 0 < index <= len(_expenses):
+        removed = _expenses.pop(index - 1)
+        storage.save_expenses(_expenses)
+        print(f"Удалён расход: {removed['category']} — {removed['amount']} руб. ({removed.get('date', '—')})")
+        return True
+    else:
+        print("Ошибка: расхода с таким номером не существует.")
+        return False
