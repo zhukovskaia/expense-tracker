@@ -1,17 +1,37 @@
-"""Добавление, просмотр, удаление и фильтрация расходов."""
+"""!
+@file expences.py
+@brief Добавление, просмотр, удаление и фильтрация расходов.
+
+Расход — словарь с ключами:
+- date — дата в формате ГГГГ-ММ-ДД;
+- category — категория;
+- amount — сумма;
+- comment — комментарий (может быть пустым).
+"""
 
 import storage
 
-# Загружаем расходы из файла при старте
+## Список расходов. Загружается из файла при старте программы.
 _expenses = storage.load_expenses()
 
 
 def get_expenses():
+    """!
+    @brief Возвращает список всех расходов.
+
+    @return Список расходов.
+    """
     return _expenses
 
 
 def _format_expense(i, exp):
-    """Формирует строку для вывода одного расхода."""
+    """!
+    @brief Формирует строку для вывода одного расхода.
+
+    @param i Номер расхода в списке.
+    @param exp Расход.
+    @return Строка вида "1. 2026-10-16 | еда — 350.0 руб. (обед)".
+    """
     line = f"{i}. {exp.get('date', '—')} | {exp['category']} — {exp['amount']} руб."
     if exp.get("comment"):
         line += f" ({exp['comment']})"
@@ -19,7 +39,9 @@ def _format_expense(i, exp):
 
 
 def show_expenses():
-    """Показать все расходы."""
+    """!
+    @brief Выводит все расходы с номерами.
+    """
     if not _expenses:
         print("Список расходов пуст.")
         return
@@ -30,7 +52,14 @@ def show_expenses():
 
 
 def add_expense(category, amount, date, comment=""):
-    """Добавить расход и сохранить в файл."""
+    """!
+    @brief Добавляет расход и сохраняет его в файл.
+
+    @param category Категория.
+    @param amount Сумма.
+    @param date Дата в формате ГГГГ-ММ-ДД.
+    @param comment Комментарий (необязательно).
+    """
     _expenses.append({
         "date": date,
         "category": category,
@@ -42,7 +71,11 @@ def add_expense(category, amount, date, comment=""):
 
 
 def delete_expense(index):
-    """Удалить расход по его номеру."""
+    """!
+    @brief Удаляет расход по его номеру и сохраняет изменения в файл.
+
+    @param index Номер расхода в списке (начиная с 1).
+    """
     if 0 < index <= len(_expenses):
         removed = _expenses.pop(index - 1)
         storage.save_expenses(_expenses)
@@ -52,7 +85,13 @@ def delete_expense(index):
 
 
 def filter_expenses(search_category):
-    """Показать расходы только по выбранной категории."""
+    """!
+    @brief Выводит расходы только по выбранной категории.
+
+    Категории сравниваются без учёта регистра и пробелов по краям.
+
+    @param search_category Категория для поиска.
+    """
     if not _expenses:
         print("Список расходов пуст.")
         return

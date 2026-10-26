@@ -1,9 +1,17 @@
+"""!
+@file menu.py
+@brief Консольное меню программы.
+"""
+
 import expences
 import stats
 import validators
 
 
 def show_menu():
+    """!
+    @brief Выводит пункты меню.
+    """
     print("\n=== Учёт расходов ===")
     print("1. Добавить расход")
     print("2. Показать все расходы")
@@ -14,6 +22,11 @@ def show_menu():
 
 
 def input_expense():
+    """!
+    @brief Запрашивает данные расхода и добавляет его.
+
+    Категория, сумма и дата проверяются функциями из validators.py.
+    """
     category = validators.read_category()
     amount = validators.read_amount()
     expense_date = validators.read_date()
@@ -22,6 +35,9 @@ def input_expense():
 
 
 def input_delete():
+    """!
+    @brief Показывает список расходов и удаляет расход по введённому номеру.
+    """
     if not expences.get_expenses():
         print("Список расходов пуст.")
         return
@@ -35,6 +51,11 @@ def input_delete():
 
 
 def run():
+    """!
+    @brief Главный цикл программы.
+
+    Показывает меню и выполняет выбранный пункт, пока пользователь не выберет 0.
+    """
     while True:
         show_menu()
         choice = input("Выберите пункт: ").strip()

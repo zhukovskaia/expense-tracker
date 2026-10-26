@@ -14,6 +14,10 @@ python src/main.py
 ##  Тесты
 python -m unittest discover -s tests -t .
 
+##  Документация
+- 📖 подробная инструкция: [docs/INSTRUCTION.md](docs/INSTRUCTION.md)
+- 📚 документация по коду: `doxygen Doxyfile`, затем открыть docs/html/index.html
+
 ##  Структура проекта
 -  src/ — исходный код
 -  tests/ — тесты

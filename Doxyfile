@@ -1,0 +1,25 @@
+# Настройки Doxygen для проекта «Учёт расходов».
+# Генерация документации: doxygen Doxyfile
+# Результат: docs/html/index.html
+# Остальные параметры имеют значения по умолчанию (полный список: doxygen -g).
+
+PROJECT_NAME           = "Учёт расходов"
+PROJECT_BRIEF          = "Консольное приложение для учёта личных расходов"
+OUTPUT_DIRECTORY       = docs
+OUTPUT_LANGUAGE        = Russian
+
+INPUT                  = src README.md docs/INSTRUCTION.md
+FILE_PATTERNS          = *.py *.md
+RECURSIVE              = YES
+INPUT_ENCODING         = UTF-8
+USE_MDFILE_AS_MAINPAGE = README.md
+
+OPTIMIZE_OUTPUT_JAVA   = YES
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+WARN_IF_UNDOCUMENTED   = YES
+WARN_NO_PARAMDOC       = YES
