@@ -1,8 +1,21 @@
-"""Добавление и просмотр расходов."""
+"""Добавление, просмотр, удаление и фильтрация расходов."""
 
 import storage
 
+# Загружаем расходы из файла при старте
 _expenses = storage.load_expenses()
+
+
+def get_expenses():
+    return _expenses
+
+
+def _format_expense(i, exp):
+    """Формирует строку для вывода одного расхода."""
+    line = f"{i}. {exp.get('date', '—')} | {exp['category']} — {exp['amount']} руб."
+    if exp.get("comment"):
+        line += f" ({exp['comment']})"
+    return line
 
 
 def show_expenses():
@@ -12,40 +25,20 @@ def show_expenses():
         return
     print("\n--- Все расходы ---")
     for i, exp in enumerate(_expenses, start=1):
-        print(f"{i}. {exp['category']} — {exp['amount']} руб. ({exp['comment']})")
+        print(_format_expense(i, exp))
     print("-------------------")
 
 
-def add_expense(category, amount, comment=""):
+def add_expense(category, amount, date, comment=""):
     """Добавить расход и сохранить в файл."""
-    _expenses.append({"category": category, "amount": amount, "comment": comment})
+    _expenses.append({
+        "date": date,
+        "category": category,
+        "amount": amount,
+        "comment": comment,
+    })
     storage.save_expenses(_expenses)
     print("Расход добавлен.")
-
-
-def show_statistics():
-    """Показать статистику по категориям."""
-    if not _expenses:
-        print("Нет данных для статистики.")
-        return
-    stats = {}
-    for exp in _expenses:
-        category = exp["category"]
-        try:
-            amount = float(str(exp["amount"]).replace(",", "."))
-        except ValueError:
-            continue
-        if category in stats:
-            stats[category] += amount
-        else:
-            stats[category] = amount
-    print("\n--- Статистика по категориям ---")
-    total = 0
-    for cat, amount in stats.items():
-        print(f"{cat}: {amount} руб.")
-        total += amount
-    print(f"ИТОГО: {total} руб.")
-    print("--------------------------------")
 
 
 def delete_expense(index):
@@ -64,7 +57,8 @@ def filter_expenses(search_category):
         print("Список расходов пуст.")
         return
 
-    filtered = [exp for exp in _expenses if exp['category'].lower() == search_category.lower()]
+    search = search_category.strip().lower()
+    filtered = [exp for exp in _expenses if str(exp["category"]).strip().lower() == search]
 
     if not filtered:
         print(f"Расходов в категории '{search_category}' не найдено.")
@@ -72,5 +66,5 @@ def filter_expenses(search_category):
 
     print(f"\n--- Расходы по категории '{search_category}' ---")
     for i, exp in enumerate(filtered, start=1):
-        print(f"{i}. {exp['amount']} руб. ({exp['comment']})")
+        print(_format_expense(i, exp))
     print("-------------------------------------------------")
