@@ -44,6 +44,37 @@ class TestExpences(unittest.TestCase):
         printed = " ".join(str(c.args[0]) for c in self.print_mock.call_args_list)
         self.assertIn("2026-10-16 | еда — 350.0 руб. (обед)", printed)
 
+    def test_delete_expense(self):
+        expences.add_expense("еда", 100.0, "2026-10-16")
+        expences.add_expense("кино", 500.0, "2026-10-17")
+        self.save_mock.reset_mock()
+        expences.delete_expense(1)
+        self.assertEqual([e["category"] for e in expences.get_expenses()], ["кино"])
+        self.save_mock.assert_called_once()
+
+    def test_delete_wrong_index(self):
+        expences.add_expense("еда", 100.0, "2026-10-16")
+        self.save_mock.reset_mock()
+        for index in (0, -1, 2):
+            expences.delete_expense(index)
+        self.assertEqual(len(expences.get_expenses()), 1)
+        self.save_mock.assert_not_called()
+
+    def test_filter_expenses(self):
+        expences.add_expense("еда", 100.0, "2026-10-16", "обед")
+        expences.add_expense("кино", 500.0, "2026-10-17")
+        self.print_mock.reset_mock()
+        expences.filter_expenses("  ЕДА ")
+        printed = " ".join(str(c.args[0]) for c in self.print_mock.call_args_list)
+        self.assertIn("2026-10-16 | еда — 100.0 руб. (обед)", printed)
+        self.assertNotIn("кино", printed)
+
+    def test_filter_not_found(self):
+        expences.add_expense("еда", 100.0, "2026-10-16")
+        self.print_mock.reset_mock()
+        expences.filter_expenses("кино")
+        self.print_mock.assert_called_once_with("Расходов в категории 'кино' не найдено.")
+
 
 if __name__ == "__main__":
     unittest.main()
